@@ -1,8 +1,7 @@
 <script setup>
-  import NavMenu from '@/components/NavMenu.vue'
+  import MainLayout from '@/components/MainLayout.vue'
 </script>
 
 <template>
-  <NavMenu />
-  <RouterView />
+  <MainLayout />
 </template>

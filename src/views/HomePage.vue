@@ -1,10 +1,40 @@
 <script setup>
-import { ref } from 'vue'
-const title = ref('Hello There ✋')
+import { onMounted } from 'vue'
+import useAPI from '@/composables/useAPI'
+import BaseTitle from '@/components/BaseTitle.vue'
+
+const { categories, getCategories } = useAPI()
+
+onMounted(async () => {
+  await getCategories()
+})
 </script>
 
 <template>
-  <main class="flex min-h-screen items-center justify-center">
-    <h1 class="text-6xl font-thin text-slate-800">{{ title }}</h1>
-  </main>
+  <BaseTitle>
+    <template #logo> <img src="/logo.svg" alt="logo" /></template> Triviantastic
+  </BaseTitle>
+  <div v-if="categories" class="categories">
+    <RouterLink
+      v-for="category in categories"
+      :key="category.id"
+      :to="`/question/category/${category.id}`"
+      class="category"
+      >{{ category.name }}</RouterLink
+    >
+  </div>
 </template>
+
+<style lang="postcss" scoped>
+.categories {
+  @apply grid flex-grow grid-cols-4 gap-12;
+
+  & .category {
+    @apply flex h-32 items-center justify-center rounded-lg border-4 border-orange-400 py-4 text-center font-bold uppercase text-slate-800 transition-colors duration-300;
+
+    &:hover {
+      @apply cursor-pointer border-red-400 bg-red-400 text-white;
+    }
+  }
+}
+</style>
